@@ -22,3 +22,12 @@ def show_person(request):
     person = Person.objects.all()
     ser = PersonSerializer(person, many=True)
     return Response(ser.data)
+
+@api_view()
+def person(request, id):
+    try:
+        person = Person.objects.get(id=id)
+    except person.DoesNotExist():
+        return Response({"error": "person does not exist"})
+    ser = PersonSerializer(person)
+    return Response(ser.data)
