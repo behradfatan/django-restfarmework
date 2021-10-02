@@ -31,3 +31,12 @@ def person(request, id):
         return Response({"error": "person does not exist"})
     ser = PersonSerializer(person)
     return Response(ser.data)
+
+
+@api_view(["POST"])
+def create_person(request):
+    create = PersonSerializer(data=request.data)
+    if create.is_valid():
+        create.save()
+    else:
+        return Response(create.errors)

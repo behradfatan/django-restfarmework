@@ -6,4 +6,5 @@ urlpatterns = [
     path('welcome/', views.welcome),
     path('show-persons/', views.show_person),
     path('person/<int:id>/', views.person),
+    path('create/', views.create_person),
 ]
