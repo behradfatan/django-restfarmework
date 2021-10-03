@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Person
 from .serializers import PersonSerializer
+from rest_framework import status
 
 @api_view()
 def hello(request):
@@ -21,16 +22,16 @@ def welcome(request):
 def show_person(request):
     person = Person.objects.all()
     ser = PersonSerializer(person, many=True)
-    return Response(ser.data)
+    return Response(ser.data, status=status.HTTP_200_OK)
 
 @api_view()
 def person(request, id):
     try:
         person = Person.objects.get(id=id)
     except person.DoesNotExist():
-        return Response({"error": "person does not exist"})
+        return Response({"error": "person does not exist"}, status=status.HTTP_400_NOT_FOUND)
     ser = PersonSerializer(person)
-    return Response(ser.data)
+    return Response(ser.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
@@ -39,4 +40,4 @@ def create_person(request):
     if create.is_valid():
         create.save()
     else:
-        return Response(create.errors)
+        return Response(create.errors, status=status.HTTP_404_NOT_FOUND)
