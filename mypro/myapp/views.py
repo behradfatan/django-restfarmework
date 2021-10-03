@@ -1,9 +1,9 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .models import Person
 from .serializers import PersonSerializer
 from rest_framework import status
-
+from rest_framework.permissions import IsAdminUser
 @api_view()
 def hello(request):
     return Response({"message": "welcome"})
@@ -35,6 +35,7 @@ def person(request, id):
 
 
 @api_view(["POST"])
+@permission_classes(['IsAdminUser'])
 def create_person(request):
     create = PersonSerializer(data=request.data)
     if create.is_valid():
